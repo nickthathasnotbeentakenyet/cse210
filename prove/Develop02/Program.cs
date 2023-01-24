@@ -111,3 +111,9 @@ class Program
 
     }
 }
+
+// # NOTE: for the instructor:
+// Added exception handling [user input on line 35; and fileNotFound on line 73]
+// Added error handling if user enters wrong menu numbers, or if there is nothing to display, or nothing to save
+// Added time when an entry is created
+// Colorized terminal to make it easy to navigate
