@@ -1,16 +1,9 @@
 public class Entry {
     public string _entryText;
-    public object _entryDateTime = DateTime.Now;
-
-    public Entry(){
-    }
-
+    public string _entryDate = DateTime.Today.ToShortDateString();
+    public string _entryTime = DateTime.Now.ToShortTimeString();
+    
     public object CreateEntry(string prompt){
-        return (_entryDateTime,prompt,_entryText);
+        return (_entryDate, _entryTime, prompt, _entryText).ToTuple();
     }
-    public void Display(){
-        Console.WriteLine($"\n[{_entryDateTime}]");
-        Console.WriteLine($"{_entryText}");
-    }
-
 }

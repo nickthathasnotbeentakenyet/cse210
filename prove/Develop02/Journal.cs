@@ -1,33 +1,48 @@
-public class Journal{
+using System.Collections;
+public class Journal
+{
     public string _fileName;
-    public Journal(){
-    }
 
-    public void Display(){
-        string[] lines = System.IO.File.ReadAllLines(_fileName);
-        foreach (string line in lines)
+    public ArrayList _allEntries = new ArrayList();
+
+    public void Display(ArrayList journal)
+    {
+        foreach (var o in journal)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(line);
+            string record = o.ToString();
+            string cleanRecord = record.Replace("(", "").Replace(")", "");
+            string[] recordParts = cleanRecord.Split(new[] { ',' }, 4);
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"\nDate: {recordParts[0]} \nTime:{recordParts[1]} \nPrompt:{recordParts[2]}");
+            Console.WriteLine($"Record: {recordParts[3].TrimStart()}");
             Console.ResetColor();
         }
-        // возможно стоит передать содержимое файла как аргумент и затем прочитать его
-        // таким образом метод лоад будет задействован 
-    }
-    public void Save(string record){
-        using (StreamWriter sw = File.AppendText(_fileName))
-        {
-            string cleanRecord = record.Replace("(", "").Replace(")", "");
-            string[] recordParts = cleanRecord.Split(new[] { ',' }, 3);
-            foreach (var _ in recordParts)
-            {
-                sw.WriteLine(_.TrimStart());
-            } 
-        }	
     }
 
-    public object Load(){
-        string[] lines = System.IO.File.ReadAllLines(_fileName);
-        return lines;
+    public void Save(ArrayList journal, string filePath)
+    {
+        using (StreamWriter sw = new StreamWriter(filePath, false))
+        {
+            foreach (var o in journal)
+            {
+                string record = o.ToString();
+                {
+                    sw.WriteLine(o);
+                }
+            }
+        }
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Success: file saved.");
+        Console.ResetColor();
+    }
+
+    public ArrayList Load(string filePath)
+    {
+        string[] journal = File.ReadAllLines(filePath);
+        ArrayList list = new ArrayList(journal);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Success: file loaded.");
+        Console.ResetColor();
+        return list;
     }
 }
