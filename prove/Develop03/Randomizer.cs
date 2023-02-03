@@ -1,15 +1,23 @@
 public class Randomizer{
 
-    public List<string> _hiddenList = new List<string>();
-    public string _hidden;
-    public int _index;
-    public List<int> _indexList = new List<int>();
-    public string getRandomWord(List<string> oldScript){
+    // properties
+    private string _hidden;
+    private int _index;
+    private List<int> _indexList = new List<int>();
+    private List<string> _hiddenList = new List<string>();
+    private List<string> _Scripture = new List<string>();
+    
+    // getters & setters
+    public List<string> HiddenList { get => _hiddenList; set => _hiddenList = value; }
+    public List<string> Scripture { get => _Scripture; set => _Scripture = value; }
+
+    // methods
+    public string getRandomWord(){
         
         while (true){
             Random random = new Random();
-            _index = random.Next(oldScript.Count);
-            _hidden = oldScript[_index];
+            _index = random.Next(_Scripture.Count);
+            _hidden = _Scripture[_index];
             if (!_hidden.ToString().Contains("_") && !_indexList.Contains(_index)){break;}
         }
         if (!_indexList.Contains(_index)){

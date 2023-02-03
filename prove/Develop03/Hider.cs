@@ -1,14 +1,19 @@
 public class Hider{
-    public List<string> _oldScripture = new List<string>();
-    public string _wordToHide;
-    public List<string> getHiddenScript(List<string> list){
-        foreach(string word in list)
+
+    // properties
+    private List<string> _oldScripture = new List<string>();
+    private List<string> _hiddenList = new List<string>();
+    // getters & setters
+    public List<string> OldScripture { get => _oldScripture; set => _oldScripture = value; }
+    public List<string> HiddenList { get => _hiddenList; set => _hiddenList = value; }
+    // methods
+    public List<string> getHiddenScript(){
+        foreach(string word in _hiddenList)
         if (_oldScripture.Contains(word)){
             int index = _oldScripture.IndexOf(word);
-            int counter = word.Count();
-            string underscore = new string('_',counter);
-            _wordToHide = underscore;
-            _oldScripture[index] = _wordToHide;
+            int letters = word.Count();
+            string underscore = new string('_',letters);
+            _oldScripture[index] = underscore;
         }
         return _oldScripture;
     }
