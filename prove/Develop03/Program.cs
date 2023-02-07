@@ -75,8 +75,22 @@ class Program
             Console.ForegroundColor = ConsoleColor.Yellow;
             System.Console.Write($"{i + 1}. ");
             Console.ForegroundColor = ConsoleColor.Green;
-            System.Console.WriteLine(scriptures[i, 0]);
+            foreach(var _ in scriptures[i,0]){
+                System.Console.Write(_);
+                Thread.Sleep(100);
+            }
+            System.Console.WriteLine();
             Console.ResetColor();
         }
     }
 }
+
+// ====================================================================
+// 'Showing Creativity and Exceeding Requirements' Comment:
+// 
+// randomly selecting from only those words that are not already hidden
+// a short library of scriptures to chose from is shown using menu
+// program doesn't just end, it waits for user to press a key to exit
+// colorized i/o
+// special effect when the menu is shown
+// ====================================================================

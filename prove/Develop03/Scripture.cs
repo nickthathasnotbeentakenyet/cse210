@@ -25,7 +25,7 @@ public class Scripture{
     }
     public void DisplayScript(){
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(_scriptRef + " ");
+        Console.Write("\n" + _scriptRef + " ");
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.Write("\"");
         foreach(var o in _scriptureList){
