@@ -37,7 +37,7 @@ public class Scripture{
             Console.ForegroundColor = ConsoleColor.Cyan;
             System.Console.Write("Press any key to exit.");
             Console.ResetColor();
-            Console.ReadLine();
+            Console.ReadKey(true);
             System.Environment.Exit(0);
         }
     }
