@@ -1,14 +1,9 @@
 class Simple : Goal {
-    private bool _isComplete;
 
-    public Simple(string Name, string Description, int Points, bool isComplete): base (Name, Description, Points){
-        _isComplete = isComplete;
+    public Simple(string goalType, bool isComplete, string name, string description, int points)
+    : base (goalType, isComplete, name, description, points){
     }
-
-    public string GetStringRepresentation(){
-        return (GoalName + " | " + GoalDescription + " | " + Points.ToString() + " | " + _isComplete.ToString());
-    }
-    public string CreateSimple(){
-        return $"[ ] {GoalName} ({GoalDescription})";
+    public override string  CreateGoal(){
+        return $"{goalType} | {isComplete} | {name} | {description} | {points}";
     }
 }

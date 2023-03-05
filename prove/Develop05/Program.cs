@@ -4,436 +4,405 @@ using System.IO;
 class Program
 {
     static void Main(string[] args)
-    {    
-        string menuItem, goalName, description;
-        string filename = "";
-        const string pointsFile = "points.txt";
-        int points, toComplete;
-        int totalPoints = getTotalPoints(pointsFile);
-        List<string> goalsList = new List<string>();
-        List<string> goalsDisplayList = new List<string>();
-        List<string> goalInfo = new List<string>();
-        while(true){
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write($"Total Points: ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(totalPoints);
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(" points");
-            PrintMenu();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write(">: ");
-            Console.ResetColor();
-            menuItem = Console.ReadLine();
-            switch (menuItem){
-                case "1": // new goal
-                    PrintGoalTypes();
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write("Goal type: ");
-                    Console.ResetColor();
-                    string goalType = Console.ReadLine();
-                    switch (goalType){
-                        case "1": // simple goal
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal name: ");
-                            Console.ResetColor();
-                            goalName = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal description: ");
-                            Console.ResetColor();
-                            description = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Amount of points associated with the goal: ");
-                            Console.ResetColor();
-                            try{
-                                points = Int32.Parse(Console.ReadLine());
-                                Simple simple = new Simple(goalName,description,points,false);
-                                string simpleString = simple.GetStringRepresentation();
-                                string simpleDisplay = simple.CreateSimple(); 
-                                goalsList.Add(simpleString); 
-                                goalsDisplayList.Add(simpleDisplay);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write("[success]");
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine(" simple goal created!");
-                                Console.ResetColor();
-                            }
-                            catch{
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("[error]");
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.WriteLine(" invalid input! Goal was not created!");
-                                Console.ResetColor();
-                            };
-                            Console.ReadKey();
-                            break;
-                        case "2": // eternal goal
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal name: ");
-                            Console.ResetColor();
-                            goalName = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal description: ");
-                            Console.ResetColor();
-                            description = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Amount of points associated with the goal: ");
-                            Console.ResetColor();
-                            try{
-                                points = Int32.Parse(Console.ReadLine());
-                                Eternal eternal = new Eternal(goalName, description, points);
-                                string eternalString = eternal.GetStringRepresentation();
-                                string eternalDisplay = eternal.CreateEternal();
-                                goalsList.Add(eternalString);
-                                goalsDisplayList.Add(eternalDisplay);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write("[success]");
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine(" eternal goal created!");
-                                Console.ResetColor();
-                            }
-                            catch{
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("[error]");
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.WriteLine(" invalid input! Goal was not created!");
-                                Console.ResetColor();
-                            }
-                            Console.ReadKey();
-                            break;
-                        case "3": // checklist goal
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal name: ");
-                            Console.ResetColor();
-                            goalName = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Goal description: ");
-                            Console.ResetColor();
-                            description = Console.ReadLine();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Amount of points associated with the goal: ");
-                            Console.ResetColor();
-                            try{
-                                points = Int32.Parse(Console.ReadLine());
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write("Number of times the goal needs to be accomplished for a bonus: ");
-                                Console.ResetColor();
-                                toComplete = Int32.Parse(Console.ReadLine());
-                                Checklist checklist = new Checklist(goalName, description, points, toComplete, 0);
-                                string checklistString = checklist.GetStringRepresentation();
-                                string checklistDisplay = checklist.CreateChecklist();
-                                goalsList.Add(checklistString);
-                                goalsDisplayList.Add(checklistDisplay);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write("[success]");
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine(" checklist goal created!");
-                                Console.ResetColor();
-                            }
-                            catch{
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("[error]"); 
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.WriteLine(" invalid input! Goal was not created!");
-                                Console.ResetColor();
-                            }
-                            Console.ReadKey();
-                            break;
-                        default:
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("[error]"); 
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.WriteLine(" invalid input!");
-                            Console.ResetColor();
-                            Console.ReadKey();
-                            break;
-                    }
-                    break;
-                case "2": // display
-                    DisplayGoals(goalsDisplayList);
-                    Console.ReadKey();
-                    break;
-                case "3": // save
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write("Enter filename: ");
-                    Console.ResetColor();
-                    filename = Console.ReadLine();
-                    if (goalsList.Count > 0){
-                        try{
-                            WriteToFile(goalsList, filename);
-                            goalsList.Clear();
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("[success]"); 
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine(" saved!");
-                            Console.ResetColor();
-                        }
-                        catch{
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            System.Console.Write("[error]"); 
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.WriteLine(" not saved!");
-                            Console.ResetColor();
-                        }
-                    }
-                    else {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("[note] ");
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("nothing to save..");
+    { 
+    List<string> goals = new List<string>();
+    const string pointsFile = "points.txt";
+    string filename = "";
+    string toComplete;
+    int totalPoints = getTotalPoints(pointsFile);
+    while(true){  
+        Console.Clear(); 
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write($"Progress: ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write(totalPoints);
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine(" points");
+        Console.ResetColor();
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        System.Console.WriteLine("Menu:\n1. Create\n2. Display\n3. Save\n4. Load\n5. Record\n6. Delete\n7. Quit");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write(":> ");
+        string menuEntry = Console.ReadLine();
+        Console.ResetColor();
+        switch (menuEntry){
+            case "1": // create
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                System.Console.WriteLine("Specify goal type:\n1. Simple goal\n2. eternal goal\n3. Checklist goal");
+                Console.Write(":> ");
+                string userGoal = Console.ReadLine();
+                Console.ResetColor();
+                switch (userGoal){
+                    case "1": // simple
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Name: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        string name = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Description: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        string description = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Points: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        string points = Console.ReadLine();
+                        Console.ResetColor();
+                        Simple simple = new Simple("Simple",false, name, description, Int32.Parse(points));
+                        string sG = simple.CreateGoal();
+                        goals.Add(sG);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine("[success] goal created.");
                         Console.ResetColor();
                         Console.ReadKey();
-                    }
-                    break;
-                case "4": // load
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write("Enter filename: ");
-                    Console.ResetColor();
-                    filename = Console.ReadLine();
-                    try{
-                        goalsDisplayList = LoadFromFile(filename);
-                        goalInfo = LoadFromFile(filename);
-                        goalsDisplayList = Beautify(goalsDisplayList);
+                        break;
+                    case "2": // eternal
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Name: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        name = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Description: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        description = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Points: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        points = Console.ReadLine();
+                        Console.ResetColor();
+                        Eternal eternal = new Eternal("Eternal",false, name, description, Int32.Parse(points));
+                        string eG = eternal.CreateGoal();
+                        goals.Add(eG);
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("[sucess]");
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.WriteLine(" file loaded");
+                        System.Console.WriteLine("[success] goal created.");
+                        Console.ReadKey();
+                        break;
+                    case "3": // checklist
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Name: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        name = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Description: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        description = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Points: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        points = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.Write("Bonus: ");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        string bonus = Console.ReadLine();
+                        while(true){
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            System.Console.Write("Steps to complete: ");
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            toComplete = Console.ReadLine();
+                            if(Int32.Parse(toComplete) > 0)break;
+                            else {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                System.Console.WriteLine("[error] must be higher than 0");
+                            }
+                        }
                         Console.ResetColor();
-                    }
-                    catch
-                    {
+                        int completed = 0;
+                        Checklist checklist = new Checklist("Checklist",false, name, description, Int32.Parse(points), Int32.Parse(bonus), completed, Int32.Parse(toComplete));
+                        string cG =  checklist.CreateGoal();
+                        goals.Add(cG);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine("[success] goal created.");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        break;
+                    default:
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("[error]"); 
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine(" file not found!");
+                        System.Console.WriteLine("[error] invalid input");
                         Console.ResetColor();
+                        Console.ReadKey();
+                        break;
+                }
+                break;
+            case "2": // display
+                if (goals.Count > 0) {DisplayGoals(goals);}
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("[error] nothing to display");
+                    Console.ResetColor();
                     }
-                    Console.ReadKey();
-                    break;
-                case "5": // record
-                    if (DisplayGoalNames(goalInfo)){
-                        try{
-                            goalsDisplayList = LoadFromFile(filename);
-                            goalInfo = LoadFromFile(filename);
-                            goalsDisplayList = Beautify(goalsDisplayList);
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write("Which goal did you accomplish?: ");
-                            Console.ResetColor();
-                            int accomplished = Int32.Parse(Console.ReadLine());
-                            int pointsToUpdate = getSpecificPoints(accomplished,goalInfo);
-                            totalPoints += pointsToUpdate;
-                            updatePoints(pointsFile,totalPoints);
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write($"Congratulations! You have earned ");
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(pointsToUpdate); 
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(" points!");
-                            Console.Write($"You now have ");
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(totalPoints); 
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(" points");
-                            updateGoalStatus(filename, accomplished);
-                            goalsDisplayList = LoadFromFile(filename);
-                            goalInfo = LoadFromFile(filename);
-                            goalsDisplayList = Beautify(goalsDisplayList);
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write("[update]");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(" goal status updated!");
-                            Console.ResetColor();
-                        }
-                        catch{
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("[error]");
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.WriteLine(" can't be accomplished..");
-                            Console.ResetColor();
-                        }
+                Console.ReadKey();
+                break;
+            case "3": // save
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                System.Console.Write("File: ");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                filename = Console.ReadLine();
+                Console.ResetColor();
+                if (goals.Count > 0){
+                    try{
+                        SaveGoals(goals, filename);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        System.Console.WriteLine("[success] file saved.");
+                    }
+                    catch{
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("[error] not saved..");
+                    }
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    System.Console.Write("[warning] You are about to clear the file. Proceed? [y/n]: ");
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    string answer = Console.ReadLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    if (answer == "y"){
+                        SaveGoals(goals, filename);
+                        System.Console.WriteLine("[success] file cleared.");
                     }
                     else{
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("[warning]");
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine(" consider loading first.");
+                        System.Console.WriteLine("Consider creating goals first");
                     }
-                    Console.ReadKey();
-                    break;
-                case "6": // delete
-                    if (DisplayGoalNames(goalInfo)){
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.Write("Which goal do you want to delete?: ");
-                        Console.ResetColor();
-                        int toDelete = Int32.Parse(Console.ReadLine());
-                        if(deleteGoal(toDelete, filename)){
-                            goalsDisplayList = LoadFromFile(filename);
-                            goalInfo = LoadFromFile(filename);
-                            goalsDisplayList = Beautify(goalsDisplayList);
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("[success]");
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine(" goal has been removed.");
-                            Console.ResetColor();
+                    Console.ResetColor();
+                }
+                Console.ReadKey();
+                break;
+            case "4": // load
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                System.Console.Write("File: ");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                filename = Console.ReadLine();
+                try{
+                    goals = LoadGoals(filename);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    System.Console.WriteLine("[success] file loaded.");
+                }
+                catch{
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("[error] file not loaded..");
+                }
+                Console.ResetColor();
+                Console.ReadKey();
+                break;
+            case "5": // record
+                if (goals.Count > 0){
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    System.Console.WriteLine("Which one did you accomplish?");
+                    DisplayGoals(goals);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    System.Console.Write(":> ");
+                    try{
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        string accomplish = Console.ReadLine();
+                        int isComplete = IsComplete(goals, Int32.Parse(accomplish));
+                        if (isComplete == 1){
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            System.Console.WriteLine("[error] this goal is already complete");
+                            System.Console.WriteLine("Consider deleting it");
+                        }
+                        else if (isComplete == -1){
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            System.Console.Write("[error] ");
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            System.Console.Write($"'{accomplish}'");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            System.Console.WriteLine(" doesn't exist..");
                         }
                         else{
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("[error]");
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.WriteLine(" can't be deleted...");
-                            Console.ResetColor();
+                            int points = Update(goals, Int32.Parse(accomplish), filename);
+                            totalPoints += points;
+                            updatePoints(pointsFile,totalPoints);
+                            goals = LoadGoals(filename);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            System.Console.WriteLine("[success] information updated");
                         }
-                    }
-                    else{
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("[warning]");
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine(" consider loading first.");
                         Console.ResetColor();
                     }
-                    Console.ReadKey();
-                    break;
-                case "7": // quit
-                    System.Environment.Exit(0);
-                    break;
-                default:
+                    catch{
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("[error] invalid input..");
+                        Console.ResetColor();
+                    }
+                }
+                else{
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("[error]");
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" invalid menu entry!");
+                    System.Console.WriteLine("[error] consider loading first");
                     Console.ResetColor();
-                    Console.ReadKey();
-                    break;
-            }
-            
-        }
-    
-    }
-
-    static void PrintMenu(){
-    Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine(@"
-Menu Options:
-    1. Create New Goal
-    2. List Goals
-    3. Save Goals
-    4. Load Goals
-    5. Record Event
-    6. Delete Goals
-    7. Quit");
-    Console.ResetColor();
-    }
-    static void PrintGoalTypes(){
-    Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine(@"
-The types of Goals are:
-    1. Simple Goal
-    2. Eternal Goal
-    3. Checklist Goal");
-    Console.ResetColor();
-    }
-    static void WriteToFile(List<string> goals, string filename){
-        using (StreamWriter sw = File.AppendText(filename))
-        {
-            foreach(string s in goals){
-                sw.WriteLine(s);
+                }
+                Console.ReadKey();
+                break;
+            case "6": // delete
+                if (goals.Count > 0){
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Which goal do you want to delete?: ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.ResetColor();
+                    Console.ResetColor();
+                    DisplayGoals(goals);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    System.Console.Write(">: ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    int toDelete = Int32.Parse(Console.ReadLine());
+                    Console.ResetColor();
+                    if(deleteGoal(toDelete, filename)){
+                        goals = LoadGoals(filename);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("[success] goal has been removed.");
+                        Console.ResetColor();
+                    }
+                    else{
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("[error] can't be deleted...");
+                        Console.ResetColor();
+                    }
+                }
+                else{
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("[error] consider loading first.");
+                    Console.ResetColor();
+                }
+                Console.ReadKey();
+                break;
+            case "7": // exit
+                System.Environment.Exit(0);
+                break;
+            default:
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine("[error] invalid menu entry");
+                Console.ResetColor();
+                Console.ReadKey();
+                break;
             }
         }
     }
     static void DisplayGoals(List<string> goals){
-        int gc = 1;
-        if (goals.Count > 0){
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("The goals are:");
-            foreach(string goal in goals){
-                Console.WriteLine($"{gc}. {goal}");
-                gc++;
+        int count = 1;
+        foreach(string goal in goals){
+            string[] parts = goal.Split(" | ");
+            string indicator;
+            if (parts[1] == "True"){
+                indicator = "[x]";
             }
-            Console.ResetColor();
-        }
-        else{
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[note]");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(" nothing to display...");
-            Console.ResetColor();
-        }
-    }
-    static List<string> LoadFromFile(string filename){
-        string[] lines = System.IO.File.ReadAllLines(filename);
-        List<string> loaded = new List<string>();
-        foreach(string line in lines){
-            loaded.Add(line);
-        }
-        return loaded;
-    }
-    static List<string> Beautify(List<string> list){
-        List<string> temp = new List<string>();
-        string r;
-        foreach(string line in list){
-            string[] sline = line.Split("|");
-            if (sline.Length == 4){
-                if (sline[3].Contains("False")){
-                    r = $"[ ] {sline[0].Trim()} ({sline[1].Trim()})";
-                }
-                else{
-                    r = $"[x] {sline[0].Trim()} ({sline[1].Trim()})";
-                }    
-            } 
-            else if (sline.Length == 3){
-                r = $"[ ] {sline[0].Trim()} ({sline[1].Trim()})";
+            else indicator = "[ ]";
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            if (parts[0] == "Checklist"){
+                System.Console.Write($"{count}.");
+                if(indicator.Contains("[x]")) Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(indicator);
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($" {parts[2]} ({parts[3]}) -- Complete: {parts[6]}/{parts[7]}");
             }
             else {
-                if (! isChecklistComplete(Int32.Parse(sline[4]), Int32.Parse(sline[3]))){
-                    r = $"[ ] {sline[0].Trim()} ({sline[1].Trim()}) -- Currently completed: {sline[4].Trim()}/{sline[3].Trim()}";
+                System.Console.Write($"{count}.");
+                if(indicator.Contains("[x]")) Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(indicator);
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($" {parts[2]} ({parts[3]})");
+            }
+            Console.ResetColor();
+        count++;  
+        }
+    } 
+    static void SaveGoals(List<string> goals, string filename){
+        using (StreamWriter sw = new StreamWriter(filename, false))
+        {
+            foreach (string goal in goals)
+            {
+                sw.WriteLine(goal);
+            }
+        }
+    }
+    static List<string> LoadGoals(string filename){
+        string[] goals = File.ReadAllLines(filename);
+        List<string> goalsList = new List<string>();
+        foreach(string line in goals){
+            goalsList.Add(line);
+        }
+        return goalsList;
+    }
+    static int IsComplete(List<string> goals, int accomplished){
+        int count = 1;
+        foreach(string goal in goals){
+            if (count == accomplished){
+                string[] parts = goal.Split(" | ");
+                if (parts[1] == "True") return 1;
+                else return 0;
+            }
+            count++;
+        };  
+        return -1;
+    }
+    static int Update(List<string> goals, int accomplished, string filename){
+        int count = 1;
+        List<string> tempList = new List<string>();
+        string newString;
+        foreach(string goal in goals){
+            if (count == accomplished){
+                string oldString = goal;
+                string[] parts = goal.Split(" | ");
+                int pointsToAdd = Int32.Parse(parts[4]);
+                if (parts[0] == "Simple"){
+                    newString = $"Simple | True | {parts[2]} | {parts[3]} | {parts[4]}";
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    System.Console.Write($"You just got another ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write($"{pointsToAdd}");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine(" points for accomplishing the goal");
+                    Console.ResetColor();
+                }
+                else if(parts[0] == "Eternal"){
+                    newString = $"Eternal | {parts[1]} | {parts[2]} | {parts[3]} | {parts[4]}";
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    System.Console.Write($"You just got another ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write($"{pointsToAdd}");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine(" points for accomplishing the goal");
+                    Console.ResetColor();
                 }
                 else{
-                    r = $"[x] {sline[0].Trim()} ({sline[1].Trim()}) -- Currently completed: {sline[4].Trim()}/{sline[3].Trim()}";
-                    // GiveBonus(totalPoints);
+                    int completed = Int32.Parse(parts[6]);
+                    int toComplete = Int32.Parse(parts[7]);
+                    completed++;
+                    if (completed < toComplete){
+                        newString = $"Checklist | {parts[1]} | {parts[2]} | {parts[3]} | {parts[4]} | {parts[5]} | {completed} | {toComplete}";
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        System.Console.Write($"You just got another ");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($"{pointsToAdd}");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine(" points for accomplishing the goal");
+                        Console.ResetColor();
+                    }
+                    else{
+                        newString = $"Checklist | True | {parts[2]} | {parts[3]} | {parts[4]} | {parts[5]} | {completed} | {toComplete}";
+                        int bonus = Int32.Parse(parts[5]);
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        System.Console.Write($"You just got another ");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($"{pointsToAdd}");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine(" points for accomplishing the goal");
+                        System.Console.Write($"Congrats! You got ");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(bonus); 
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine(" points as a bonus for completing the goal");
+                        Console.ResetColor();
+                        pointsToAdd += bonus;
+                    }
                 }
+            string[] lines = File.ReadAllLines(filename);
+            lines[accomplished - 1] = newString;
+            File.WriteAllLines(filename, lines);
+            return pointsToAdd;
             }
-            temp.Add(r);
-        }
-        return temp;
-    }
-    public static bool isChecklistComplete(int Comp, int toComp){
-        return Comp >= toComp;
-    }
-    public static bool DisplayGoalNames(List<string> goals){
-        int gc = 1;
-        if (goals.Count > 0){
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("The goals are:");
-            foreach(string line in goals){
-                string [] goal = line.Split("|");
-                Console.WriteLine($"{gc}. {goal[0]}");
-                gc++;
-            }
-            Console.ResetColor();
-            return true;
-        }
-        else{
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[note]");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(" nothing to display...");
-            Console.ResetColor();
-            return false;
-        }
-
-    }
-    public static void updatePoints(string filePath, int points)
-    {
-        using (StreamWriter sw = new StreamWriter(filePath, false)){
-                    sw.WriteLine(points.ToString());
-                }
-    }
-    public static int getSpecificPoints(int line, List<string> goals){
-            string lineNeeded = goals[line-1];
-            string [] parts = lineNeeded.Split("|");
-            int points = Int32.Parse(parts[2].Trim());
-            return points;
+            count++;
+        };
+        return 0;
     }
     public static int getTotalPoints(string filename)
     {
@@ -443,26 +412,11 @@ The types of Goals are:
         }
         else return 0;
     }
-    public static void updateGoalStatus(string filename, int line){
-        {
-            string[] lines = File.ReadAllLines(filename);
-            string newText="";
-            string lineNeeded = lines[line-1];
-            string [] parts = lineNeeded.Split("|");
-            // simple 
-            if (parts.Length == 4){
-                newText = lineNeeded.Replace("False", "True");
-            }
-            // checklist
-            if (parts.Length == 5){
-                int oldValue = Int32.Parse(parts[4]);
-                int newValue = oldValue + 1;
-                newText = $"{parts[0].Trim()} | {parts[1].Trim()} | {parts[2].Trim()} | {parts[3].Trim()} | {newValue}";
-            } 
-            
-            lines[line - 1] = newText;
-            File.WriteAllLines(filename, lines);
-        }
+    public static void updatePoints(string filename, int points)
+    {
+        using (StreamWriter sw = new StreamWriter(filename, false)){
+                    sw.WriteLine(points.ToString());
+                }
     }
     public static bool deleteGoal(int lineNum, string filename){
         var tempFile = Path.GetTempFileName();
@@ -485,4 +439,14 @@ The types of Goals are:
         }
     }
 }
-// TODO: bonus!!!!
+
+// COMMENT: ----------------------------------------------------------------------------------
+/*
+1. Added 'delete' functionality
+2. If user attempts to save to file when there is nothing in memory it will warn 
+if user wants to clear out the file. If not -> operation canceled and advice is given
+3. Program warns if user tries to set the number of times to accomplish a checklist goal to zero
+4. Other informative messages
+5. Colorized i/o 
+*/
+// TODO: reset progress on a goal(simple -> true to false; checklist -> false & steps to zero)
