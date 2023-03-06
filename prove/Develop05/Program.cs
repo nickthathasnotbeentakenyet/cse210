@@ -20,7 +20,7 @@ class Program
         Console.WriteLine(" points");
         Console.ResetColor();
         Console.ForegroundColor = ConsoleColor.Magenta;
-        System.Console.WriteLine("Menu:\n1. Create\n2. Display\n3. Save\n4. Load\n5. Record\n6. Delete\n7. Quit");
+        System.Console.WriteLine("Menu:\n1. Create\n2. Display\n3. Save\n4. Load\n5. Record\n6. Delete\n7. Reset\n8. Quit");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.Write(":> ");
         string menuEntry = Console.ReadLine();
@@ -239,7 +239,6 @@ class Program
                     Console.WriteLine("Which goal do you want to delete?: ");
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.ResetColor();
-                    Console.ResetColor();
                     DisplayGoals(goals);
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     System.Console.Write(">: ");
@@ -265,7 +264,43 @@ class Program
                 }
                 Console.ReadKey();
                 break;
-            case "7": // exit
+            case "7": //reset --------------------------------------------------------------------
+                if (goals.Count > 0){
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("To reset progress specify goal: ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.ResetColor();
+                    DisplayGoals(goals);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    System.Console.Write(">: ");
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    int toReset = Int32.Parse(Console.ReadLine());
+                    Console.ResetColor();
+                    if(resetGoal(goals, toReset, filename) == 1){
+                        goals = LoadGoals(filename);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("[success] progress reset");
+                        Console.ResetColor();
+                    }
+                    else if(resetGoal(goals, toReset, filename) == -1){
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("[error] eternal goal has no progress to reset..");
+                        Console.ResetColor();
+                    }
+                    else if(resetGoal(goals, toReset, filename) == 0){
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("[error] invalid input...");
+                        Console.ResetColor();
+                    }
+                }
+                else{
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("[error] consider loading first.");
+                    Console.ResetColor();
+                }
+                Console.ReadKey();
+                break;
+            case "8": // exit
                 System.Environment.Exit(0);
                 break;
             default:
@@ -438,15 +473,41 @@ class Program
             return true;
         }
     }
+    static int resetGoal(List<string> goals, int toReset, string filename){
+        int count = 1;
+        List<string> tempList = new List<string>();
+        string newString;
+        foreach(string goal in goals){
+            if (count == toReset){
+                string[] parts = goal.Split(" | ");
+                if (parts[0] == "Simple"){
+                    newString = $"Simple | False | {parts[2]} | {parts[3]} | {parts[4]}";
+                }
+                else if (parts[0] == "Checklist"){
+                    newString = $"Checklist | False | {parts[2]} | {parts[3]} | {parts[4]} | {parts[5]} | 0 | {parts[7]}";
+                }
+                else return -1;
+                string[] lines = File.ReadAllLines(filename);
+                lines[toReset - 1] = newString;
+                File.WriteAllLines(filename, lines);
+                return 1;
+            }
+            count++;
+        };
+        return 0;
+    }
 }
 
 // COMMENT: ----------------------------------------------------------------------------------
 /*
 1. Added 'delete' functionality
-2. If user attempts to save to file when there is nothing in memory it will warn 
-if user wants to clear out the file. If not -> operation canceled and advice is given
-3. Program warns if user tries to set the number of times to accomplish a checklist goal to zero
-4. Other informative messages
-5. Colorized i/o 
+2. Added 'reset progress' functionality for simple and checklist goals
+3. If user attempts to save to file when there is nothing in memory it will warn,
+if user wants to clear out the file: 
+    a) if yes -> the file will be cleared out , 
+    b) if no -> operation canceled and advice to load from a file is given
+4. Program warns if user tries to set the number of times to accomplish a checklist goal to zero
+5. Other informative messages
+6. Colorized i/o 
 */
-// TODO: reset progress on a goal(simple -> true to false; checklist -> false & steps to zero)
+
