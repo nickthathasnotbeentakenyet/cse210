@@ -29,7 +29,7 @@ Time: {time}
 Address: {address.GetAddress()}
 ";
     } 
-    public string GetShortMsg(){
-        return $":here goes type of event: \nTitle: {title}\nDate: {date}\n";
+    public string GetShortMsg(string eventType){
+        return $"{eventType} \nTitle: {title}\nDate: {date}\n";
     }
 }

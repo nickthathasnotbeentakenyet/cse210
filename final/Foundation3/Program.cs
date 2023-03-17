@@ -9,7 +9,7 @@ class Program
         "May 11, 2023", "10:00", address_1, "W. Speaker", 500);
 
         Address address_2 = new Address("2nd Ave, Los-Angeles");
-        Reception reception = new Reception("ChatGPT", "A big problem or a big opportunity?",
+        Reception reception = new Reception("ChatGPT must die", "A big problem or a big opportunity?",
         "April 11, 2023", "16:00", address_2, "chatgptLAconf@gmail.com");
 
         Address address_3 = new Address("Central Park, New-York");
@@ -18,17 +18,14 @@ class Program
 
         System.Console.WriteLine(lecture.GetStandardMsg());
         System.Console.WriteLine(lecture.GetFullMsg());
-        System.Console.WriteLine(lecture.GetShortMsg());
+        System.Console.WriteLine(lecture.GetShortMsg("[Lecture]"));
 
         System.Console.WriteLine(reception.GetStandardMsg());
         System.Console.WriteLine(reception.GetFullMsg());
-        System.Console.WriteLine(reception.GetShortMsg());
+        System.Console.WriteLine(reception.GetShortMsg("[Reception]"));
 
         System.Console.WriteLine(outdoor.GetStandardMsg());
         System.Console.WriteLine(outdoor.GetFullMsg());
-        System.Console.WriteLine(outdoor.GetShortMsg());
-
+        System.Console.WriteLine(outdoor.GetShortMsg("[Outdoor gathering]"));
     }
 }
-
-// NOTE: доделать что-то там с типом мероприятия...
