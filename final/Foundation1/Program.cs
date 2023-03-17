@@ -50,17 +50,17 @@ class Program
         comment_9._name = "Luke";
         comment_9._comment = "Hate that girl!";
 
-        video_1._comments.Add(comment_1.getCombined());
-        video_1._comments.Add(comment_2.getCombined());
-        video_1._comments.Add(comment_3.getCombined());
+        video_1._comments.Add(comment_1.GetCombined());
+        video_1._comments.Add(comment_2.GetCombined());
+        video_1._comments.Add(comment_3.GetCombined());
 
-        video_2._comments.Add(comment_4.getCombined());
-        video_2._comments.Add(comment_5.getCombined());
-        video_2._comments.Add(comment_6.getCombined());
+        video_2._comments.Add(comment_4.GetCombined());
+        video_2._comments.Add(comment_5.GetCombined());
+        video_2._comments.Add(comment_6.GetCombined());
 
-        video_3._comments.Add(comment_7.getCombined());
-        video_3._comments.Add(comment_8.getCombined());
-        video_3._comments.Add(comment_9.getCombined());
+        video_3._comments.Add(comment_7.GetCombined());
+        video_3._comments.Add(comment_8.GetCombined());
+        video_3._comments.Add(comment_9.GetCombined());
 
         List<Video> videos = new List<Video>();
         videos.Add(video_1);

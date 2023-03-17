@@ -15,14 +15,14 @@ class Program
     Address address = new Address("742 Evergreen Terrace", "Springfield", "Unknown", "USA");
     Customer customer_1 = new Customer("Liza Simpson", address);
     Order order_1 = new Order(productsList, customer_1.name);
-    totalCost = order_1.getTotalCost(address, productsList);
+    totalCost = order_1.GetTotalCost(address, productsList);
     
     System.Console.WriteLine("Products:");
     foreach(Product product in productsList){
-        System.Console.WriteLine("\t" + order_1.getPackingLabel(product));
+        System.Console.WriteLine("\t" + order_1.GetPackingLabel(product));
     }
 
-    shipL = order_1.getShippingLabel(customer_1);
+    shipL = order_1.GetShippingLabel(customer_1);
     System.Console.WriteLine($"Total cost:\n\t${totalCost:F2}");
     System.Console.WriteLine(shipL);
 
@@ -40,17 +40,15 @@ class Program
     Address address2 = new Address("Nuclear Station", "Springfield", "Unknown", "USA");
     Customer customer_2 = new Customer("Homer Simpson", address2);
     Order order_2 = new Order(productsList, customer_2.name);
-    totalCost = order_2.getTotalCost(address2, productsList);
+    totalCost = order_2.GetTotalCost(address2, productsList);
     
     System.Console.WriteLine("Products:");
     foreach(Product product in productsList){
-        System.Console.WriteLine("\t" + order_2.getPackingLabel(product));
+        System.Console.WriteLine("\t" + order_2.GetPackingLabel(product));
     }
 
-    shipL = order_2.getShippingLabel(customer_2);
+    shipL = order_2.GetShippingLabel(customer_2);
     System.Console.WriteLine($"Total cost:\n\t${totalCost:F2}");
     System.Console.WriteLine(shipL);
-
-    
     }
 }

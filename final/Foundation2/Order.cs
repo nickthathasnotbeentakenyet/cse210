@@ -12,22 +12,22 @@ class Order{
         _customer = customer;
     }
     // methods
-    public float getTotalCost(Address address, List<Product> products){
+    public float GetTotalCost(Address address, List<Product> products){
         int inUSA = 5;
         int outUSA = 35;
         float totalPrice = 0;
         foreach (Product product in productsList){
-            totalPrice += product.getTotalPrice();
+            totalPrice += product.GetTotalPrice();
         }
-        if (address.isUSA() == true){totalPrice += inUSA;}
+        if (address.IsUSA())totalPrice += inUSA;
         else totalPrice += outUSA;
         return totalPrice;
     }
-    public string getPackingLabel(Product product){
+    public string GetPackingLabel(Product product){
         return $"{product.name} | {product.productId}";
     }
-    public string getShippingLabel(Customer customer){
-        return $"Customer: \n\t{customer.name}\nAddress:{customer.address.getAddress()}";
+    public string GetShippingLabel(Customer customer){
+        return $"Customer: \n\t{customer.name}\nAddress:{customer.address.GetAddress()}";
     }
 
 }

@@ -7,9 +7,13 @@ abstract class Activity{
         _date = date;
         _duration = duration;
     } 
-    public abstract float getDistance();
-    public abstract float getSpeed(); 
-    public abstract float getPace(); 
-    public abstract string getSummary();
+    public abstract float GetDistance();
+    public abstract float GetSpeed(); 
+    public float GetPace(){
+        return duration / GetDistance();
+    }  
+    public string GetSummary(){
+        return $"[{date.ToString("dd MMMM yyyy")} ({duration} min)] Distance: {GetDistance():F1} km, Speed: {GetSpeed()} kph, Pace: {GetPace()} min per km";
+    }
 
 }

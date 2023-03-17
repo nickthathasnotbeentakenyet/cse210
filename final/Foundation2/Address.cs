@@ -17,11 +17,11 @@ class Address{
     }
     
     // methods
-    public bool isUSA(){
+    public bool IsUSA(){
         if (country.Trim().ToUpper() == "USA") return true;
         else return false;
     }
-    public string getAddress(){
+    public string GetAddress(){
         return $"\n\t{street}\n\t{city}\n\t{state}\n\t{country}";
     }
 }

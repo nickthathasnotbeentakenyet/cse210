@@ -20,7 +20,7 @@ class Product{
     }
 
     // methods
-    public float getTotalPrice(){
+    public float GetTotalPrice(){
         return price * quantity;
     }
 }

@@ -1,18 +1,22 @@
 class Reception : Event{
-    private string _RSVPemail;
-    public string RSVPemail{get=>_RSVPemail;set=>_RSVPemail=value;}
+    // fields
+    private string _rsvpEmail;
+    // get&set
+    public string RSVPemail{get=>_rsvpEmail;set=>_rsvpEmail=value;}
+    // constructor
     public Reception(string title, string description, string date, string time, Address address, string RSVPemail) 
     : base(title, description, date, time, address){
-        _RSVPemail = RSVPemail;
+        _rsvpEmail = RSVPemail;
     }
-    public string getFullMsg(){
+    // method
+    public string GetFullMsg(){
         return @$"
 Title: {title}
 Description: {description}
 Date: {date}
 Time: {time}
-Address: {address.getAddress()}
-RSVP-email: {_RSVPemail}
+Address: {address.GetAddress()}
+RSVP-email: {_rsvpEmail}
 ";
     }
 }

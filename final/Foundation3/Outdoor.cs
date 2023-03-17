@@ -1,17 +1,21 @@
 class Outdoor : Event{
+    // field
     private string _weather;
-    public string Weather{get=>_weather;set=>_weather=value;}
+    // get&set
+    public string weather{get=>_weather;set=>_weather=value;}
+    // constructor
     public Outdoor(string title, string description, string date, string time, Address address, string weather) 
     : base(title, description, date, time, address){
         _weather = weather;
     }
-    public string getFullMsg(){
+    // method
+    public string GetFullMsg(){
         return @$"
 Title: {title}
 Description: {description}
 Date: {date}
 Time: {time}
-Address: {address.getAddress()}
+Address: {address.GetAddress()}
 Weather: {_weather}
 ";
     }

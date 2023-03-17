@@ -6,17 +6,10 @@ class Bicycling: Activity{
         _speed = speed;
     } 
     
-    public override float getDistance(){
-        // км/ч * ч
+    public override float GetDistance(){
         return _speed * duration / 60;
     }
-    public override float getSpeed(){
+    public override float GetSpeed(){
         return _speed;
     } 
-    public override float getPace(){
-        return duration / getDistance();
-    } 
-    public override string getSummary(){
-        return $"[{date.ToString("dd MMMM yyyy")} ({duration} min)] Distance: {getDistance():F1} km, Speed: {getSpeed()} kph, Pace: {getPace()} min per km";
-    }
 }

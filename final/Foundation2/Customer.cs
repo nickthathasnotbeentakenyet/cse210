@@ -14,8 +14,8 @@ class Customer{
     }
 
     // methods
-    public bool isInUSA(Address address){
-        return address.isUSA()? true:false;
+    public bool IsInUSA(Address address){
+        return address.IsUSA()? true:false;
     }
 
 }

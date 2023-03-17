@@ -16,17 +16,19 @@ class Program
         Outdoor  outdoor = new Outdoor("Aliens among us", "let's not cut people in halves to explore if that's true",
         "June 16, 2023", "13:00", address_3, "Sunny");
 
-        System.Console.WriteLine(lecture.getStandardMsg());
-        System.Console.WriteLine(lecture.getFullMsg());
-        System.Console.WriteLine(lecture.getShortMsg());
+        System.Console.WriteLine(lecture.GetStandardMsg());
+        System.Console.WriteLine(lecture.GetFullMsg());
+        System.Console.WriteLine(lecture.GetShortMsg());
 
-        System.Console.WriteLine(reception.getStandardMsg());
-        System.Console.WriteLine(reception.getFullMsg());
-        System.Console.WriteLine(reception.getShortMsg());
+        System.Console.WriteLine(reception.GetStandardMsg());
+        System.Console.WriteLine(reception.GetFullMsg());
+        System.Console.WriteLine(reception.GetShortMsg());
 
-        System.Console.WriteLine(outdoor.getStandardMsg());
-        System.Console.WriteLine(outdoor.getFullMsg());
-        System.Console.WriteLine(outdoor.getShortMsg());
+        System.Console.WriteLine(outdoor.GetStandardMsg());
+        System.Console.WriteLine(outdoor.GetFullMsg());
+        System.Console.WriteLine(outdoor.GetShortMsg());
 
     }
 }
+
+// NOTE: доделать что-то там с типом мероприятия...

@@ -12,16 +12,15 @@ class Lecture : Event{
         _capacity = capacity;
     }
     // method
-    public string getFullMsg(){
+    public string GetFullMsg(){
         return @$"
 Title: {title}
 Description: {description}
 Date: {date}
 Time: {time}
-Address: {address.getAddress()}
+Address: {address.GetAddress()}
 Speaker: {_speaker}
 Capacity: {_capacity}
 ";
     }
-
 }

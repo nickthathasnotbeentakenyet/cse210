@@ -20,16 +20,16 @@ class Event{
         _address = address;
     }
     // methods
-    public string getStandardMsg(){
+    public string GetStandardMsg(){
         return @$"
 Title: {title}
 Description: {description}
 Date: {date}
 Time: {time}
-Address: {address.getAddress()}
+Address: {address.GetAddress()}
 ";
     } 
-    public string getShortMsg(){
+    public string GetShortMsg(){
         return $":here goes type of event: \nTitle: {title}\nDate: {date}\n";
     }
 }
