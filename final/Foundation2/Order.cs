@@ -1,4 +1,5 @@
 class Order{
+
     // members
     private List<Product> _productsList = new List<Product>();
     private string _customer;
@@ -6,11 +7,13 @@ class Order{
     // getters & setters
     public List<Product> productsList{get=>_productsList;set=>_productsList=value;}
     public string customer{get=>_customer;set=>_customer=value;}
+
     // constructors
     public Order(List<Product> productsList, string customer){
         _productsList = productsList;
         _customer = customer;
     }
+    
     // methods
     public float GetTotalCost(Address address, List<Product> products){
         int inUSA = 5;
